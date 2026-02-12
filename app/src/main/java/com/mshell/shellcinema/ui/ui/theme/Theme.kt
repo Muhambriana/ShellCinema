@@ -1,4 +1,4 @@
-package com.mshell.shellcinema.ui.theme
+package com.mshell.shellcinema.ui.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
