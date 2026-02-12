@@ -1,8 +1,29 @@
+import java.util.Locale
+import java.util.Properties
+import kotlin.apply
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
+
+fun loadProperty(propertyName: String, defaultValue: String = ""): String {
+    (project.findProperty(propertyName) as String?)?.takeIf { it.isNotBlank() }?.let { return it }
+
+    System.getenv(propertyName)?.takeIf { it.isNotBlank() }?.let { return it }
+    System.getenv(propertyName.uppercase(Locale.US))?.takeIf { it.isNotBlank() }?.let { return it }
+
+    val propertiesFile = rootProject.file("local.properties")
+    return Properties().apply {
+        if (propertiesFile.exists()) load(propertiesFile.inputStream())
+    }.getProperty(propertyName, defaultValue)
+}
+
+// Load properties using the function
+val apiKey: String by lazy { loadProperty("API_KEY") }
+val baseURL: String by lazy { loadProperty("BASE_URL") }
 
 android {
     namespace = "com.mshell.shellcinema"
@@ -40,30 +61,38 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
     }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.core)
+
+    // Jetpack Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.ui.text.google.fonts)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.compose)
+    androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
