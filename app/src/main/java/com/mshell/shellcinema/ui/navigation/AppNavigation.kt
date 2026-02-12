@@ -9,9 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mshell.shellcinema.core.domain.model.Genre
 import com.mshell.shellcinema.ui.features.genre_list.GenreList
-import com.mshell.shellfeed.core.domain.model.NewsDetail
-import com.mshell.shellfeed.ui.features.news_detail.NewsDetailScreen
-import com.mshell.shellfeed.ui.features.news_list.NewsListScreen
+import com.mshell.shellcinema.ui.features.movie_list.MovieListScreen
 
 @Composable
 fun AppNavigation(
@@ -36,23 +34,17 @@ fun AppNavigation(
         }
 
         composable(Screen.MovieList.route) {
-            val newsDetail = navHostController.previousBackStackEntry
+            val genre = navHostController.previousBackStackEntry
                 ?.savedStateHandle
-                ?.get<Genre>(Screen.Companion.MOVIE_LIST_ARGUMENT)
+                ?.get<Genre>(Screen.MOVIE_LIST_ARGUMENT)
 
-            newsDetail?.let { news ->
-                MovieList(
-                    newsDetail = news,
+            genre?.let { selectedGenre ->
+                MovieListScreen(
                     onBackClick = {
                         navHostController.popBackStack()
                     },
-                    onShareClick = {
-                        val shareIntent = Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, "${news.title}\n\n${news.url}")
-                            type = "text/plain"
-                        }
-                        context.startActivity(Intent.createChooser(shareIntent, "Share News"))
+                    onItemClick = {
+                        navHostController.navigate()
                     }
                 )
             }

@@ -37,7 +37,7 @@ fun GenreListScreen(
 
 @Composable
 fun GenreList(
-    genreList: List<Genre>,
+    genreList: List<Genre> = emptyList(),
     onItemClick: (Genre) -> Unit = {}
 ) {
     LazyColumn(

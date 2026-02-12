@@ -1,6 +1,7 @@
 package com.mshell.shellcinema.core.data.source.remote
 
 import android.util.Log
+import com.mshell.shellcinema.core.domain.model.DiscoverMovies
 import com.mshell.shellcinema.core.domain.model.Genre
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,5 +28,12 @@ class RemoteDataSource(private val api: Api) {
                 Log.e("RemoteDataSource", e.toString())
             }
         }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMoviesForPaging(
+        genreId: Int?,
+        page: Int
+    ): DiscoverMovies {
+        return api.getMoviesByGenre(genreId.toString(), page)
     }
 }
