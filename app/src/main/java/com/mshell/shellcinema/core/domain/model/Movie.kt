@@ -47,10 +47,10 @@ data class Movie(
 	val releaseDate: String? = null,
 
 	@field:SerializedName("popularity")
-	val popularity: Any? = null,
+	val popularity: Double? = null,
 
 	@field:SerializedName("vote_average")
-	val voteAverage: Any? = null,
+	val voteAverage: Double? = null,
 
 	@field:SerializedName("id")
 	val id: Int? = null,
