@@ -13,6 +13,7 @@ navigationCompose = "2.8.5"
 coil = "2.5.0"
 paging = "3.3.5"
 pagingCompose = "3.3.5"
+youtubePlayer = "13.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +43,8 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 # Paging 3
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
+
+ilyapavlovskii-youtubeplayer = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtubePlayer" }
 
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }

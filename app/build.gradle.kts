@@ -99,6 +99,8 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
 
+    implementation(libs.ilyapavlovskii.youtubeplayer)
+
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.compose.ui.tooling)
