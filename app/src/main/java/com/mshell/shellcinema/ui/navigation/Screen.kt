@@ -2,9 +2,16 @@ package com.mshell.shellcinema.ui.navigation
 
 sealed class Screen(val route: String) {
     data object GenreList: Screen("genre_list")
-    data object MovieList: Screen("movie_list")
+    data object MovieList: Screen("movie_list/{genreId}/{genreName}") {
+        fun createRoute(genreId: Int, genreName: String) = "movie_list/$genreId/$genreName"
+    }
+    data object MovieDetail: Screen("movie_detail/{movieId}") {
+        fun createRoute(movieId: Int) = "movie_detail/$movieId"
+    }
 
     companion object {
-        const val MOVIE_LIST_ARGUMENT = "movie_list_argument"
+        const val GENRE_ID = "genreId"
+        const val GENRE_NAME = "genreName"
+        const val MOVIE_ID = "movieId"
     }
 }

@@ -1,8 +1,10 @@
 package com.mshell.shellcinema.ui.features.movie_list
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
 import com.mshell.shellcinema.core.domain.model.Movie
 import com.mshell.shellcinema.ui.ui.theme.ShellCinemaTheme
 import org.koin.androidx.compose.koinViewModel
@@ -27,6 +28,15 @@ fun MovieListScreen(
     val moviesState = viewModel.movies.collectAsLazyPagingItems()
 
     Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+                .clickable { onBackClick() }
+        ) {
+            Text(text = viewModel.genreName)
+        }
+
         when (moviesState.loadState.refresh) {
             is LoadState.Loading -> {
                 Box(
@@ -66,15 +76,18 @@ fun MovieList(
     movies: LazyPagingItems<Movie>,
     onItemClick: (Movie) -> Unit = {}
 ) {
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
-            count = movies.itemCount,
-            key = movies.itemKey { it.id!! }
+            count = movies.itemCount
         ) { index ->
-            movies[index]?.let { movie ->
+            val movie = movies[index]
+            if (movie != null) {
                 MovieItemCard(
                     movie = movie,
                     onClick = { onItemClick(movie) }
@@ -82,7 +95,6 @@ fun MovieList(
             }
         }
 
-        // Handle pagination loading
         when (movies.loadState.append) {
             is LoadState.Loading -> {
                 item {
@@ -118,8 +130,6 @@ fun MovieList(
 @Composable
 fun MovieListScreenPreviewDark() {
     ShellCinemaTheme {
-        // Note: Previews don't work well with PagingData
-        // Consider using a fake ViewModel or mock data
         Box(modifier = Modifier.fillMaxSize()) {
             Text("Preview not available for PagingData")
         }

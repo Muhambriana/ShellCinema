@@ -7,11 +7,16 @@ import okhttp3.Response
 class ApiInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
+        val originalUrl = originalRequest.url
+
+        val urlWithApiKey = originalUrl.newBuilder()
+            .addQueryParameter("api_key", NetworkInfo.API_KEY)
+            .build()
 
         val requestWithHeaders = originalRequest.newBuilder()
-            .addHeader("User-Agent", "ShellFeed/${BuildConfig.VERSION_CODE}")
+            .url(urlWithApiKey)
+            .addHeader("User-Agent", "ShellCinema/${BuildConfig.VERSION_CODE}")
             .addHeader("Accept", "application/json")
-            .addHeader("X-Api-Key", NetworkInfo.API_KEY) // NewsAPI supports this header
             .build()
 
         return chain.proceed(requestWithHeaders)

@@ -22,14 +22,13 @@ fun loadProperty(propertyName: String, defaultValue: String = ""): String {
 }
 
 // Load properties using the function
-val apiKey: String by lazy { loadProperty("API_KEY") }
-val baseURL: String by lazy { loadProperty("BASE_URL") }
+val apiKey: String by lazy { loadProperty("API_KEY", "") }
+val baseUrl: String by lazy { loadProperty("BASE_URL", "") }
+val baseUrlImage: String by lazy { loadProperty("BASE_URL_IMAGE", "") }
 
 android {
     namespace = "com.mshell.shellcinema"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.mshell.shellcinema"
@@ -42,6 +41,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "BASE_URL_IMAGE", "\"$baseUrlImage\"")
     }
 
     buildTypes {

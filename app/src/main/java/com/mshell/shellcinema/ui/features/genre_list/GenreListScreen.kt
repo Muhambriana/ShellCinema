@@ -4,9 +4,12 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,15 +26,35 @@ fun GenreListScreen(
     val genreState by viewModel.genreState.collectAsState()
 
     when(genreState) {
+        is Resource.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         is Resource.Success -> {
             val genreList = genreState.data
             if (genreList.isNullOrEmpty()) {
-                return
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "No genres available")
+                }
+            } else {
+                GenreList(genreList, onItemClick = onItemClick)
             }
-
-            GenreList(genreList, onItemClick = onItemClick)
         }
-        else -> {}
+        is Resource.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Error: ${(genreState as Resource.Error).errorMessage}")
+            }
+        }
     }
 }
 
@@ -46,7 +69,6 @@ fun GenreList(
     ) {
         items(
             items = genreList,
-            key = { it.id ?: 0 },
         ) { genre ->
             GenreItemCard(
                 genre,
