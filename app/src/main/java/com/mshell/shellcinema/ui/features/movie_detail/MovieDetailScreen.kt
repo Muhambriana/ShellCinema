@@ -114,7 +114,6 @@ fun MovieDetailScreen(
             }
         }
 
-        // Review Bottom Sheet
         if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },
@@ -160,14 +159,12 @@ fun MovieDetailContent(
             .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
-        // Poster and Rating Section
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Movie Poster
             AsyncImage(
                 model = "https://image.tmdb.org/t/p/w500${movieDetail.posterPath}",
                 contentDescription = movieDetail.title,
@@ -178,7 +175,6 @@ fun MovieDetailContent(
                 contentScale = ContentScale.Crop
             )
 
-            // Rating Section
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -186,7 +182,6 @@ fun MovieDetailContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Rating with Star
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
@@ -212,7 +207,6 @@ fun MovieDetailContent(
                     )
                 }
 
-                // Release Date
                 movieDetail.releaseDate?.let { date ->
                     Text(
                         text = date,
@@ -223,7 +217,6 @@ fun MovieDetailContent(
             }
         }
 
-        // Description Section
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -249,7 +242,6 @@ fun MovieDetailContent(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // User Reviews Button
         Button(
             onClick = onShowReviews,
             modifier = Modifier.fillMaxWidth(),
@@ -279,7 +271,6 @@ fun ReviewBottomSheetContent(
             .fillMaxHeight(0.9f)
             .background(Color(0xFF1E1E1E))
     ) {
-        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -306,7 +297,6 @@ fun ReviewBottomSheetContent(
 
         HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f), thickness = 1.dp)
 
-        // Reviews List
         when (reviews.loadState.refresh) {
             is LoadState.Loading -> {
                 Box(
@@ -354,7 +344,6 @@ fun ReviewBottomSheetContent(
                             }
                         }
 
-                        // Loading more indicator
                         when (reviews.loadState.append) {
                             is LoadState.Loading -> {
                                 item {
@@ -403,12 +392,10 @@ fun ReviewItem(review: Review) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Author Info
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Avatar
                 Box(
                     modifier = Modifier
                         .size(48.dp)
@@ -445,7 +432,6 @@ fun ReviewItem(review: Review) {
                         )
                     )
 
-                    // Rating
                     review.authorDetails?.rating?.let { rating ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -470,7 +456,6 @@ fun ReviewItem(review: Review) {
                     }
                 }
 
-                // Date
                 review.createdAt?.let { date ->
                     Text(
                         text = formatDate(date),
@@ -483,7 +468,6 @@ fun ReviewItem(review: Review) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Review Content
             Text(
                 text = review.content ?: "No content",
                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -494,7 +478,6 @@ fun ReviewItem(review: Review) {
                 overflow = TextOverflow.Ellipsis
             )
 
-            // Read More / Read Less
             if ((review.content?.length ?: 0) > 150) {
                 Text(
                     text = if (isExpanded) "...Read Less" else "...Read More",
@@ -511,7 +494,6 @@ fun ReviewItem(review: Review) {
     }
 }
 
-// Helper function to format date
 fun formatDate(dateString: String): String {
     return try {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
@@ -519,7 +501,6 @@ fun formatDate(dateString: String): String {
         val date = inputFormat.parse(dateString)
         date?.let { outputFormat.format(it) } ?: dateString
     } catch (e: Exception) {
-        // Try alternative format
         try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())

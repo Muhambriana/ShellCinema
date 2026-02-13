@@ -73,7 +73,6 @@ fun MovieItemCard(
                     .align(Alignment.BottomStart)
                     .padding(4.dp)
             ) {
-                // Movie Title
                 Text(
                     text = movie.title ?: "Unknown",
                     modifier = Modifier
@@ -107,7 +106,7 @@ fun MovieItemCard(
                             imageVector = Icons.Default.Star,
                             contentDescription = "Rating",
                             modifier = Modifier.size(16.dp),
-                            tint = Color(0xFFFFD700) // Gold color
+                            tint = Color(0xFFFFD700)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
