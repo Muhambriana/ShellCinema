@@ -8,6 +8,7 @@ import com.mshell.shellcinema.core.data.source.remote.ApiResponse
 import com.mshell.shellcinema.core.data.source.remote.RemoteDataSource
 import com.mshell.shellcinema.core.domain.model.Genre
 import com.mshell.shellcinema.core.domain.model.Movie
+import com.mshell.shellcinema.core.domain.model.MovieDetail
 import com.mshell.shellcinema.core.domain.repository.ShellCinemaRepository
 import com.mshell.shellcinema.core.utils.MoviePagingSource
 import kotlinx.coroutines.flow.Flow
@@ -48,6 +49,27 @@ class ShellCinemaRepositoryImpl(
                 MoviePagingSource(remoteDataSource, genreId)
             }
         ).flow
+    }
+
+    override fun getMovieDetail(movieId: Int?): Flow<Resource<MovieDetail?>> {
+        return flow {
+            remoteDataSource.getMovieDetail(movieId).collect { apiResponse ->
+                when (apiResponse) {
+                    is ApiResponse.Success -> {
+                        emit(Resource.Success(apiResponse.data))
+                    }
+                    is ApiResponse.Error -> {
+                        emit(Resource.Error(errorMessage = apiResponse.errorMessage))
+                    }
+                    is ApiResponse.Progress -> {
+                        emit(Resource.Loading(progress = apiResponse.progress))
+                    }
+                    is ApiResponse.Empty -> {
+                        emit(Resource.Success(null))
+                    }
+                }
+            }
+        }
     }
 
 

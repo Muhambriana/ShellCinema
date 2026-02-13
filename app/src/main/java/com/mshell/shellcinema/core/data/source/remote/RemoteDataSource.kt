@@ -3,6 +3,7 @@ package com.mshell.shellcinema.core.data.source.remote
 import android.util.Log
 import com.mshell.shellcinema.core.domain.model.DiscoverMovies
 import com.mshell.shellcinema.core.domain.model.Genre
+import com.mshell.shellcinema.core.domain.model.MovieDetail
 import com.mshell.shellcinema.core.domain.model.Reviews
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -43,5 +44,21 @@ class RemoteDataSource(private val api: Api) {
         page: Int
     ): Reviews {
         return api.getMovieReviews(movieId, page)
+    }
+
+    fun getMovieDetail(movieId: Int?): Flow<ApiResponse<MovieDetail>> {
+        return flow {
+            try {
+                val response = api.getMovieDetail(movieId)
+
+                emit(
+                    ApiResponse.Success(response)
+                )
+            } catch (e: Exception) {
+                emit(ApiResponse.Error("Oops.. Something went wrong"))
+                e.printStackTrace()
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
     }
 }
