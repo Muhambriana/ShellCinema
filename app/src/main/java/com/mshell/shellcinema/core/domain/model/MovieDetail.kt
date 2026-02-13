@@ -1,6 +1,7 @@
 package com.mshell.shellcinema.core.domain.model
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class MovieDetail(
 
@@ -20,7 +21,7 @@ data class MovieDetail(
 	val backdropPath: String? = null,
 
 	@field:SerializedName("revenue")
-	val revenue: Int? = null,
+	val revenue: BigInteger? = null,
 
 	@field:SerializedName("genres")
 	val genres: List<GenresItem?>? = null,

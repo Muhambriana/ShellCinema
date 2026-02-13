@@ -32,7 +32,7 @@ interface Api {
         @Path("movie_id") movieId: Int?
     ): MovieDetail
 
-    @GET("tv/{movie_id}/videos")
+    @GET("movie/{movie_id}/videos")
     suspend fun getMovieVideos(
         @Path("movie_id") movieId: Int?
     ): MovieVideos
