@@ -3,8 +3,11 @@ package com.mshell.shellcinema.ui.features.movie_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.mshell.shellcinema.core.data.source.Resource
 import com.mshell.shellcinema.core.domain.model.MovieDetail
+import com.mshell.shellcinema.core.domain.model.Review
 import com.mshell.shellcinema.core.domain.repository.ShellCinemaRepository
 import com.mshell.shellcinema.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +25,9 @@ class MovieDetailViewModel(
     private val _movieState = MutableStateFlow<Resource<MovieDetail?>>(Resource.Loading())
     val movieState: StateFlow<Resource<MovieDetail?>> = _movieState.asStateFlow()
 
+    private val _reviewsState = MutableStateFlow<PagingData<Review>>(PagingData.empty())
+    val reviewsState: StateFlow<PagingData<Review>> = _reviewsState.asStateFlow()
+
     init {
         getMovieDetails(movieId)
     }
@@ -31,6 +37,16 @@ class MovieDetailViewModel(
              repository.getMovieDetail(movieId).collect {
                  _movieState.value = it
              }
+        }
+    }
+
+    fun loadReviews() {
+        viewModelScope.launch {
+            repository.getMovieReviews(movieId)
+                .cachedIn(viewModelScope)
+                .collect {
+                    _reviewsState.value = it
+                }
         }
     }
 }

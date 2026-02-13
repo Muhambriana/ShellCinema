@@ -56,7 +56,7 @@ class ShellCinemaRepositoryImpl(
     override fun getMovieReviews(movieId: Int?): Flow<PagingData<Review>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = 5,
                 prefetchDistance = 5,
                 enablePlaceholders = false
             ),
