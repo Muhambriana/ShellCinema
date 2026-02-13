@@ -3,6 +3,7 @@ package com.mshell.shellcinema.core.data.source.remote
 import com.mshell.shellcinema.core.domain.model.DiscoverMovies
 import com.mshell.shellcinema.core.domain.model.Genres
 import com.mshell.shellcinema.core.domain.model.MovieDetail
+import com.mshell.shellcinema.core.domain.model.MovieVideos
 import com.mshell.shellcinema.core.domain.model.Reviews
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -30,4 +31,9 @@ interface Api {
     suspend fun getMovieDetail(
         @Path("movie_id") movieId: Int?
     ): MovieDetail
+
+    @GET("tv/{movie_id}/videos")
+    suspend fun getMovieVideos(
+        @Path("movie_id") movieId: Int?
+    ): MovieVideos
 }

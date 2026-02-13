@@ -4,6 +4,7 @@ import android.util.Log
 import com.mshell.shellcinema.core.domain.model.DiscoverMovies
 import com.mshell.shellcinema.core.domain.model.Genre
 import com.mshell.shellcinema.core.domain.model.MovieDetail
+import com.mshell.shellcinema.core.domain.model.MovieVideos
 import com.mshell.shellcinema.core.domain.model.Reviews
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -58,6 +59,22 @@ class RemoteDataSource(private val api: Api) {
                 emit(ApiResponse.Error("Oops.. Something went wrong"))
                 e.printStackTrace()
                 Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    fun getMovieVideos(movieId: Int?): Flow<ApiResponse<MovieVideos>> {
+        return flow {
+            try {
+                val response = api.getMovieVideos(movieId)
+
+                emit(
+                    ApiResponse.Success(response)
+                )
+            } catch (e: Exception) {
+                emit(ApiResponse.Error("Oops.. Something went wrong"))
+                e.printStackTrace()
+                Log.e("RemoteDataSource",e.toString())
             }
         }.flowOn(Dispatchers.IO)
     }
