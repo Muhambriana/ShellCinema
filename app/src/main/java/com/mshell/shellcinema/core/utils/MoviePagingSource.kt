@@ -14,19 +14,15 @@ class MoviePagingSource(
         val page = params.key ?: 1
 
         return try {
-            // 1. Call the API directly (suspending)
             val response = remoteDataSource.getMoviesForPaging(genreId, page)
             val movies = response.results?.filterNotNull() ?: emptyList()
 
-            // 2. Return Success (Paging 3's version of ApiResponse.Success)
             LoadResult.Page(
                 data = movies,
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (movies.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
-            // 3. Return Error (Paging 3's version of ApiResponse.Error)
-            // This will trigger LoadState.Error in your Compose UI
             LoadResult.Error(e)
         }
     }

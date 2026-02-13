@@ -9,8 +9,10 @@ import com.mshell.shellcinema.core.data.source.remote.RemoteDataSource
 import com.mshell.shellcinema.core.domain.model.Genre
 import com.mshell.shellcinema.core.domain.model.Movie
 import com.mshell.shellcinema.core.domain.model.MovieDetail
+import com.mshell.shellcinema.core.domain.model.Review
 import com.mshell.shellcinema.core.domain.repository.ShellCinemaRepository
 import com.mshell.shellcinema.core.utils.MoviePagingSource
+import com.mshell.shellcinema.core.utils.ReviewPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -50,6 +52,20 @@ class ShellCinemaRepositoryImpl(
             }
         ).flow
     }
+
+    override fun getMovieReviews(movieId: Int?): Flow<PagingData<Review>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 5,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                ReviewPagingSource(remoteDataSource, movieId)
+            }
+        ).flow
+    }
+
 
     override fun getMovieDetail(movieId: Int?): Flow<Resource<MovieDetail?>> {
         return flow {
