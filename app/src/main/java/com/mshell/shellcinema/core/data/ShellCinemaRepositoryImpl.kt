@@ -94,7 +94,14 @@ class ShellCinemaRepositoryImpl(
             remoteDataSource.getMovieVideos(movieId).collect { apiResponse ->
                 when (apiResponse) {
                     is ApiResponse.Success -> {
-                        emit(Resource.Success(apiResponse.data))
+                        val filteredVideos = apiResponse.data.copy(
+                            results = apiResponse.data.results?.filter {
+                                it?.site.equals("YouTube", ignoreCase = true)
+                            }?.sortedByDescending {
+                                it?.type == "Trailer"
+                            }
+                        )
+                        emit(Resource.Success(filteredVideos))
                     }
                     is ApiResponse.Error -> {
                         emit(Resource.Error(errorMessage = apiResponse.errorMessage))
