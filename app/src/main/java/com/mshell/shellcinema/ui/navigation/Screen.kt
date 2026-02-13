@@ -9,9 +9,14 @@ sealed class Screen(val route: String) {
         fun createRoute(movieId: Int) = "movie_detail/$movieId"
     }
 
+    data object YouTubePlayerScreen: Screen("player/{videoKey}") {
+        fun createRoute(videoKey: String) = "player/$videoKey"
+    }
+
     companion object {
         const val GENRE_ID = "genreId"
         const val GENRE_NAME = "genreName"
         const val MOVIE_ID = "movieId"
+        const val VIDEO_KEY = "videoKey"
     }
 }

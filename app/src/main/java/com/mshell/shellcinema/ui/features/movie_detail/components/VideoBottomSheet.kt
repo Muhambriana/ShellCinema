@@ -1,7 +1,5 @@
 package com.mshell.shellcinema.ui.features.movie_detail.components
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -34,7 +32,8 @@ import java.util.Locale
 @Composable
 fun VideoBottomSheet(
     videosState: Resource<MovieVideos?>,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onPlayVideo: (String) -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -61,7 +60,8 @@ fun VideoBottomSheet(
     ) {
         VideoBottomSheetContent(
             videosState = videosState,
-            onClose = onDismiss
+            onClose = onDismiss,
+            onPlayVideo = onPlayVideo
         )
     }
 }
@@ -69,7 +69,8 @@ fun VideoBottomSheet(
 @Composable
 fun VideoBottomSheetContent(
     videosState: Resource<MovieVideos?>,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onPlayVideo: (String) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -151,15 +152,7 @@ fun VideoBottomSheetContent(
                             videos[index]?.let { video ->
                                 VideoItem(
                                     video = video,
-                                    onClick = {
-                                        video.key?.let { key ->
-                                            val intent = Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse("https://www.youtube.com/watch?v=$key")
-                                            )
-                                            context.startActivity(intent)
-                                        }
-                                    }
+                                    onPlayVideo = onPlayVideo
                                 )
                             }
                         }
@@ -173,12 +166,16 @@ fun VideoBottomSheetContent(
 @Composable
 fun VideoItem(
     video: MovieVideo,
-    onClick: () -> Unit
+    onPlayVideo: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = {
+                video.key?.let { key ->
+                    onPlayVideo(key)
+                }
+            })
             .border(
                 width = 1.dp,
                 color = Color.Gray.copy(alpha = 0.3f),

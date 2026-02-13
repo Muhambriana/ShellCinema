@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mshell.shellcinema.ui.features.genre_list.GenreListScreen
 import com.mshell.shellcinema.ui.features.movie_detail.MovieDetailScreen
+import com.mshell.shellcinema.ui.features.movie_detail.components.YouTubePlayerScreen
 import com.mshell.shellcinema.ui.features.movie_list.MovieListScreen
 
 @Composable
@@ -59,8 +60,21 @@ fun AppNavigation(
                 movieId = movieId,
                 onBackClick = {
                     navHostController.popBackStack()
+                },
+                onPlayVideo = { videoKey ->
+                    navHostController.navigate(Screen.YouTubePlayerScreen.createRoute(videoKey))
                 }
             )
+        }
+
+        composable(
+            route = Screen.YouTubePlayerScreen.route,
+            arguments = listOf(
+                navArgument(Screen.VIDEO_KEY) { type = NavType.StringType }
+            )
+        ) { backstackEntry ->
+            val videoKey = backstackEntry.arguments?.getString(Screen.VIDEO_KEY) ?: ""
+            YouTubePlayerScreen(videoKey)
         }
     }
 }

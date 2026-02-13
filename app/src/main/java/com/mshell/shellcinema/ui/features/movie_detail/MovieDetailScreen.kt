@@ -29,7 +29,8 @@ import org.koin.androidx.compose.koinViewModel
 fun MovieDetailScreen(
     movieId: Int,
     viewModel: MovieDetailViewModel = koinViewModel(),
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    onPlayVideo: (String) -> Unit = {}
 ) {
     val movieState by viewModel.movieState.collectAsState()
     val reviews = viewModel.reviewsState.collectAsLazyPagingItems()
@@ -105,13 +106,14 @@ fun MovieDetailScreen(
         if (showReviewBottomSheet) {
             ReviewBottomSheet(
                 reviews = reviews,
-                onDismiss = { showReviewBottomSheet = false }
+                onDismiss = { showReviewBottomSheet = false },
             )
         }
         if (showVideoBottomSheet) {
             VideoBottomSheet(
                 videosState = videosState,
-                onDismiss = { showVideoBottomSheet = false }
+                onDismiss = { showVideoBottomSheet = false },
+                onPlayVideo = onPlayVideo
             )
         }
     }
