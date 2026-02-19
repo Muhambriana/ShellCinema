@@ -33,6 +33,8 @@ fun YouTubePlayerScreen(
     // 1. Manage System UI (Immersive Mode)
     // This hides the status bar and nav bar when this screen is active
     DisposableEffect(Unit) {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+
         val window = activity?.window
         if (window != null) {
             val controller = WindowCompat.getInsetsController(window, window.decorView)
@@ -40,12 +42,11 @@ fun YouTubePlayerScreen(
             controller.hide(WindowInsetsCompat.Type.systemBars())
         }
         onDispose {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             // Restore System UI when leaving this screen
             val window = activity?.window
             if (window != null) {
                 WindowCompat.getInsetsController(window, window.decorView).show(WindowInsetsCompat.Type.systemBars())
-                // Ensure we return to portrait if they left while in landscape
-                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         }
     }
@@ -58,7 +59,7 @@ fun YouTubePlayerScreen(
             // IFramePlayerOptions usually takes no arguments or a lambda in the latest version
             val options = IFramePlayerOptions.Builder(context)
                 .controls(1)
-                .fullscreen(1)
+                .fullscreen(0)
                 .build()
 
             initialize(object : AbstractYouTubePlayerListener() {
@@ -68,14 +69,14 @@ fun YouTubePlayerScreen(
                 }
             }, options)
 
-            addFullscreenListener(object : FullscreenListener {
-                override fun onEnterFullscreen(fullscreenView: View, exitFullscreen: () -> Unit) {
-                    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                }
-                override fun onExitFullscreen() {
-                    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                }
-            })
+//            addFullscreenListener(object : FullscreenListener {
+//                override fun onEnterFullscreen(fullscreenView: View, exitFullscreen: () -> Unit) {
+//                    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+//                }
+//                override fun onExitFullscreen() {
+//                    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//                }
+//            })
         }
     }
 
