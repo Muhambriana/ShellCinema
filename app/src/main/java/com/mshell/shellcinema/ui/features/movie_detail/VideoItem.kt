@@ -23,9 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mshell.shellcinema.core.domain.model.MovieVideo
+import com.mshell.shellcinema.ui.ui.theme.ShellCinemaTheme
+import com.mshell.shellcinema.utils.Helper
 import com.mshell.shellcinema.utils.Helper.formatDate
 
 @Composable
@@ -57,6 +60,8 @@ fun VideoItem(
             video.key?.let { key ->
                 AsyncImage(
                     model = "https://img.youtube.com/vi/$key/mqdefault.jpg",
+                    placeholder = Helper.getImagePlaceHolder(),
+                    error = Helper.getErrorPlaceHolder(),
                     contentDescription = video.name,
                     modifier = Modifier
                         .width(120.dp)
@@ -131,5 +136,23 @@ fun VideoItem(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun VideoItemPreview() {
+    ShellCinemaTheme {
+        VideoItem(
+            video = MovieVideo(
+                id = "1",
+                key = "dQw4w9WgXcQ",
+                name = "Official Trailer",
+                type = "Trailer",
+                official = true,
+                publishedAt = "2024-01-01T00:00:00.000Z",
+            ),
+            onClick = {}
+        )
     }
 }

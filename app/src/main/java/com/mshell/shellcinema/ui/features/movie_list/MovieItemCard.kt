@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import com.mshell.shellcinema.core.domain.model.Movie
 import com.mshell.shellcinema.core.utils.NetworkInfo
 import com.mshell.shellcinema.ui.ui.theme.ShellCinemaTheme
+import com.mshell.shellcinema.utils.Helper
 
 @Composable
 fun MovieItemCard(
@@ -45,6 +46,8 @@ fun MovieItemCard(
         ) {
             AsyncImage(
                 model = "${NetworkInfo.BASE_URL_IMAGE}${movie.posterPath}",
+                placeholder = Helper.getImagePlaceHolder(),
+                error = Helper.getErrorPlaceHolder(),
                 contentDescription = movie.title ?: "Movie poster",
                 modifier = Modifier
                     .fillMaxSize()

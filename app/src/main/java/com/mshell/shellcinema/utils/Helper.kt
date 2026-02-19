@@ -3,6 +3,9 @@ package com.mshell.shellcinema.utils
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.painter.Painter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -32,5 +35,13 @@ object Helper {
             context = context.baseContext
         }
         return null
+    }
+
+    fun getImagePlaceHolder(): Painter {
+        return ColorPainter(Color.Cyan.copy(alpha = 0.3f))
+    }
+
+    fun getErrorPlaceHolder(): Painter {
+        return ColorPainter(Color.Cyan.copy(alpha = 0.3f))
     }
 }

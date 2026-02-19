@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -23,6 +24,8 @@ import com.mshell.shellcinema.core.data.source.Resource
 import com.mshell.shellcinema.core.domain.model.MovieDetail
 import com.mshell.shellcinema.ui.features.movie_detail.components.ReviewBottomSheet
 import com.mshell.shellcinema.ui.features.movie_detail.components.VideoBottomSheet
+import com.mshell.shellcinema.ui.ui.theme.ShellCinemaTheme
+import com.mshell.shellcinema.utils.Helper
 import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,6 +143,8 @@ fun MovieDetailContent(
         ) {
             AsyncImage(
                 model = "https://image.tmdb.org/t/p/w500${movieDetail.posterPath}",
+                placeholder = Helper.getImagePlaceHolder(),
+                error = Helper.getErrorPlaceHolder(),
                 contentDescription = movieDetail.title,
                 modifier = Modifier
                     .width(230.dp)
@@ -242,5 +247,23 @@ fun MovieDetailContent(
                 )
             }
         }
+    }
+}
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MovieDetailContentPreview() {
+    ShellCinemaTheme {
+        MovieDetailContent(
+            movieDetail = MovieDetail(
+                id = 1,
+                title = "Sample Movie Title",
+                overview = "This is a sample movie description for preview purposes. It gives an overview of the plot and key details about the movie.",
+                posterPath = "/sample.jpg",
+                voteAverage = 8.5,
+                releaseDate = "2025-01-15"
+            )
+        )
     }
 }
