@@ -64,7 +64,7 @@ fun MovieItemCard(
                         Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
+                                Color.Black.copy(alpha = 0.9f)
                             )
                         )
                     )
@@ -93,34 +93,17 @@ fun MovieItemCard(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                Row(
+                Text(
+                    text = movie.releaseDate ?: "Unknown",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 15.sp,
+                        color = Color.White
+                    ),
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "Rating",
-                            modifier = Modifier.size(16.dp),
-                            tint = Color(0xFFFFD700)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "%.1f".format(movie.voteAverage ?: 0.0),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 15.sp,
-                                color = Color.White
-                            )
-                        )
-                    }
-                }
+                )
             }
         }
     }
@@ -143,7 +126,7 @@ fun MovieItemCardPreview() {
                     id = 278,
                     title = "The Shawshank Redemption",
                     overview = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-                    releaseDate = "1994-09-23",
+                    releaseDate = "1994",
                     genreIds = listOf(18, 80),
                     posterPath = "/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
                     voteAverage = 8.7

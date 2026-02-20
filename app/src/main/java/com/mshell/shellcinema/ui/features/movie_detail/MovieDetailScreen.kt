@@ -1,4 +1,5 @@
 ﻿package com.mshell.shellcinema.ui.features.movie_detail
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -251,7 +252,11 @@ fun MovieDetailContent(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun MovieDetailContentPreview() {
     ShellCinemaTheme {
